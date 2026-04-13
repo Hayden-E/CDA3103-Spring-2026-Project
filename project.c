@@ -223,8 +223,6 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
-    // Ella or Tyler
-
     //for next instruction
     if(Branch == 0x0 && Jump == 0x0)
     {
