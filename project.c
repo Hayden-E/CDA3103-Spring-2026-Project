@@ -19,6 +19,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
             *ALUresult = A < B;
             break;
 
+        //?
         case 011:
             *ALUresult = A < B;
             break;
