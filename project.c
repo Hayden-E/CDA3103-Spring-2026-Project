@@ -108,7 +108,22 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
+    // Extracting bits from instruction
 
+    // Bits 31 - 26
+    *op = instruction & (0x3F<<26);
+    // Bits 25 - 21
+    *r1 = instruction & (0x1F<<21);
+    // Bits 20 - 16
+    *r2 = instruction & (0x1F<<16);
+    // Bits 15 - 11
+    *r3 = instruction & (0x1F<<11);
+    // Bits 5 - 0
+    *funct = instruction & (0x3F);
+    // Bits 15 - 0
+    *offset = instruction & (0xFFFF);
+    // Bits 25 - 0
+    *jsec = instruction & (0x3FFFFFF);
 }
 
 /* instruction decode */
@@ -242,7 +257,7 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
         //shift to left 2 bits
         unsigned jsecShift = jsec << 2;
        //will figure out 
-    } // JWIOAJFIOAWFJIOWAFJNIOFWJNIOWFAN
+    }
 
 }
 
