@@ -8,41 +8,80 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
     switch(ALUControl) 
     {
-        case 000:
+        case 0x0: // A + B
             *ALUresult = (A+B);
             break;
         
-        case 001:
+        case 0x1: // A - B
             *ALUresult = (A-B);
             break;
 
-        case 010:
+        case 0x2: // A < B (signed)
+            *ALUresult = A < B;
+
+            unsigned mask = 0x10000000;
+            unsigned f = 0x00000000;
+            unsigned Aneg = mask & A;
+            unsigned Bneg = mask & B;
+
+            if(Aneg == f && Bneg == f)
+            {
+                // A and B are positive
+
+                if(A < B)
+                    *ALUresult = 0x1;
+                else
+                    *ALUresult = 0x0;
+            }
+            else if(Aneg == f && Bneg == mask) 
+            {
+                // A is positive B is negative
+
+                *ALUresult = 0x0;
+            }
+            else if(Aneg == mask && Bneg == f) 
+            {
+                // A is negative B is positive
+
+                *ALUresult = 0x1;
+            }
+            else 
+            {
+                // A and B are negative
+                
+                if((~A + 1) < (~B + 1))
+                    *ALUresult = 0x1;
+                else
+                    *ALUresult = 0x0;
+            }
+
+            break;
+
+        case 0x3: // A <  B (unsigned)
             *ALUresult = A < B;
             break;
 
-        //?
-        case 011:
-            *ALUresult = A < B;
+        case 0x4: // A and B
+            *ALUresult = A & B;
             break;
 
-        case 100:
-            *ALUresult = A && B;
+        case 0x5: // A or B
+            *ALUresult = A | B;
             break;
 
-        case 101:
-            *ALUresult = A || B;
-            break;
-
-        case 110:
+        case 0x6: // Shift B left 16 bits
             *ALUresult = B<<16;
             break;
 
-        case 111:
+        case 0x7: // Not A
             *ALUresult = ~A;
             break;
     }
 
-    *Zero = (*ALUresult == 0);
+    if(*ALUresult == 0x0)
+        *Zero = 0x1;
+    else
+        *Zero = 0x0;
 }
 
 /* instruction fetch */
