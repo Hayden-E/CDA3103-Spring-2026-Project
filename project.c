@@ -6,6 +6,7 @@
 //hello hayden
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
+    //cooked
     switch(ALUControl) 
     {
         case 0x0: // A + B
@@ -108,6 +109,8 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
+
+    //whats this button do
 
 }
 
@@ -241,8 +244,8 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
     {
         //shift to left 2 bits
         unsigned jsecShift = jsec << 2;
-       //will figure out
-       //hello
+        unsigned PC4Bits = (*PC + 4) & 0xF0000000;//bitmask for PC + 4 first 4 bits 
+        *PC = PC4Bits | jsecShift;//combine bits with 28 bit jsec
     }
 
 }
