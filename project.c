@@ -230,7 +230,8 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 
     //branch equal
     if(Branch == 0x1 && Jump ==0x0 && Zero == 0x1)
-    {
+    { 
+        // This is my comment
         *PC = (extended_value << 2) + (*PC + 4);
 
     }
