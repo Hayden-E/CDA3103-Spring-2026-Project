@@ -108,7 +108,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
-    
+
 }
 
 /* instruction decode */
@@ -154,20 +154,25 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 
     //check to see if ALU result is a valid address(only if it is a address.
 
-    if(ALUresult % 4 != 0)return 1;
-
-    //Load word 
-    if(MemRead == 0x1 && MemWrite == 0x0)
+    if(MemRead == 1)
     {
+        if(ALUresult % 4 != 0)
+        {
+            return 1;
+        }
+
         *memdata = Mem[ALUresult >> 2];
-    } 
-
-    //store word into memory
-    if(MemRead == 0x0 && MemWrite == 0x1)
-    {
-        Mem[ALUresult >> 2] = data2;
     }
 
+    if(MemWrite == 1)
+    {
+        if(ALUresult % 4 != 0)
+        {
+            return 1;
+        }
+
+        Mem[ALUresult >> 2] = data2;
+    }
     return 0;
 
 }
@@ -178,13 +183,65 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+    if(RegDst == 0x1 && MemtoReg == 0x0 && RegWrite == 0x1)
+    {
+        if(r3 == 0)return;
+
+         Reg[r3] = ALUresult;
+         
+         return;
+    }
+
+    //addi, lui write to reg 2
+    if(RegDst == 0x0 && MemtoReg == 0x1 && RegWrite == 0x1)
+    {
+        if(r2 == 0)return;
+
+         //load word get s memedata in reg2
+        Reg[r2] = memdata; 
+
+    }
+   
+    if(RegDst == 0x0 && MemtoReg == 0x0 && RegWrite == 0x1)
+    {
+        //cant write to reg0
+        if(r2 == 0)return;
+
+        //load gets alu result in reg2
+        Reg[r2] = ALUresult; 
+        return;
+    }
 
 }
+
+
 
 /* PC update */
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
     // Ella or Tyler
+
+    //for next instruction
+    if(Branch == 0x0 && Jump == 0x0)
+    {
+        *PC = *PC + 4; // go to next instruction
+    }
+
+    //branch equal
+    if(Branch == 0x1 && Jump ==0x0 && Zero == 0x1)
+    {
+        *PC = (extended_value << 2) + (*PC + 4);
+
+    }
+
+    //then we need to jump
+    if(Branch == 0x0 && Jump == 0x1)
+    {
+        //shift to left 2 bits
+        unsigned jsecShift = jsec << 2;
+       //will figure out 
+    }
+
 }
 
