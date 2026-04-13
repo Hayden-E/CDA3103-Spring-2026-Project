@@ -105,20 +105,25 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 
     //check to see if ALU result is a valid address(only if it is a address.
 
-    if(ALUresult % 4 != 0)return 1;
-
-    //Load word 
-    if(MemRead == 0x1 && MemWrite == 0x0)
+    if(MemRead == 1)
     {
+        if(ALUresult % 4 != 0)
+        {
+            return 1;
+        }
+
         *memdata = Mem[ALUresult >> 2];
-    } 
-
-    //store word into memory
-    if(MemRead == 0x0 && MemWrite == 0x1)
-    {
-        Mem[ALUresult >> 2] = data2;
     }
 
+    if(MemWrite == 1)
+    {
+        if(ALUresult % 4 != 0)
+        {
+            return 1;
+        }
+
+        Mem[ALUresult >> 2] = data2;
+    }
     return 0;
 
 }
@@ -129,8 +134,39 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+    if(RegDst == 0x1 && MemtoReg == 0x0 && RegWrite == 0x1)
+    {
+        if(r3 == 0)return;
+
+         Reg[r3] = ALUresult;
+         
+         return;
+    }
+
+   
+
+
+    //addi, lui write to reg 2
+    if(RegDst == 0x0 && MemtoReg == 0x1 && RegWrite == 0x1)
+    {
+        if(r2 == 0)return;
+    }
+    //load word get s memedata in reg2
+    Reg[r2] = memdata; 
+
+    if(RegDst == 0x0 && MemtoReg == 0x0 && RegWrite == 0x1)
+    {
+        //cant write to reg0
+        if(r2 == 0)return;
+
+        //load gets alu result in reg2
+        Reg[r2] = ALUresult; 
+        return;
+    }
 
 }
+
+
 
 /* PC update */
 /* 10 Points */
