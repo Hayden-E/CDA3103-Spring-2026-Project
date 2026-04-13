@@ -182,17 +182,16 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
          return;
     }
 
-   
-
-
     //addi, lui write to reg 2
     if(RegDst == 0x0 && MemtoReg == 0x1 && RegWrite == 0x1)
     {
         if(r2 == 0)return;
-    }
-    //load word get s memedata in reg2
-    Reg[r2] = memdata; 
 
+         //load word get s memedata in reg2
+        Reg[r2] = memdata; 
+
+    }
+   
     if(RegDst == 0x0 && MemtoReg == 0x0 && RegWrite == 0x1)
     {
         //cant write to reg0
