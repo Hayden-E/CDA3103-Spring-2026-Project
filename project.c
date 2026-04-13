@@ -211,5 +211,26 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
 
+    //for next instruction
+    if(Branch == 0x0 && Jump == 0x0)
+    {
+        *PC = *PC + 4; // go to next instruction
+    }
+
+    //branch equal
+    if(Branch == 0x1 && Jump ==0x0 && Zero == 0x1)
+    {
+        *PC = (extended_value << 2) + (*PC + 4);
+
+    }
+
+    //then we need to jump
+    if(Branch == 0x0 && Jump == 0x1)
+    {
+        //shift to left 2 bits
+        unsigned jsecShift = jsec << 2;
+       //will figure out 
+    }
+
 }
 
