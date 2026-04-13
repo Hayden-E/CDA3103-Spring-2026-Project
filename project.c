@@ -3,6 +3,7 @@
 
 /* ALU */
 /* 10 Points */
+//hello hayden
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
     switch(ALUControl) 
