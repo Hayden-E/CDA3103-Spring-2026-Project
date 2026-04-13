@@ -199,11 +199,12 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+    //r type write to register 3
     if(RegDst == 0x1 && MemtoReg == 0x0 && RegWrite == 0x1)
     {
         if(r3 == 0)return;
 
-         Reg[r3] = ALUresult;
+         Reg[r3] = ALUresult; // r-types get aluresult in reg3
          
          return;
     }
