@@ -199,36 +199,20 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-    //r type write to register 3
-    if(RegDst == 0x1 && MemtoReg == 0x0 && RegWrite == 0x1)
+    if(RegWrite)
     {
-        if(r3 == 0)return;
+        unsigned dest;
+        if(RegDst)dest = r3;  //r-type
+        else dest = r2; //i-type 
 
-         Reg[r3] = ALUresult; // r-types get aluresult in reg3
-         
-         return;
+        if(dest == 0)return;
+
+        if(MemtoReg)
+        {
+            Reg[dest] = memdata; //lw
+        }
+        else Reg[dest] = ALUresult; //r-type addi lui
     }
-
-    //addi, lui write to reg 2
-    if(RegDst == 0x0 && MemtoReg == 0x1 && RegWrite == 0x1)
-    {
-        if(r2 == 0)return;
-
-         //load word get s memedata in reg2
-        Reg[r2] = memdata; 
-
-    }
-   
-    if(RegDst == 0x0 && MemtoReg == 0x0 && RegWrite == 0x1)
-    {
-        //cant write to reg0
-        if(r2 == 0)return;
-
-        //load gets alu result in reg2
-        Reg[r2] = ALUresult; 
-        return;
-    }
-
 }
 
 
@@ -240,13 +224,13 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
     //for next instruction
     if(Branch == 0x0 && Jump == 0x0)
     {
-        *PC = *PC + 4; // go to next instruction
+        *PC = *PC + 4; //go to next instruction
     }
 
     //branch equal
     if(Branch == 0x1 && Jump ==0x0 && Zero == 0x1)
     { 
-        // This is my comment
+        //This is my comment
         *PC = (extended_value << 2) + (*PC + 4);
 
     }
