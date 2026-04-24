@@ -92,6 +92,9 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
     // Check that PC is a multiple of 4
     if(PC % 4 != 0x0)
         return 1;
+
+    if(PC > 0xFFFF)
+        return 1;
         
     // Fetch instruction from mem
     *instruction = Mem[PC>>2];
