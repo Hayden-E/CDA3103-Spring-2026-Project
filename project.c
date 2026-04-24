@@ -1,7 +1,7 @@
 // CDA 3103C-26
 // Sarah Angell
 // April 24th 2026
-// Developed by Hayden Eicke, Tyler Mazurcuck, and Elizabeth Schmidt 
+// Developed by Hayden Eicke, Tyler Mazurek, and Elizabeth Schmidt 
 
 #include "spimcore.h"
 
@@ -94,9 +94,6 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
     // Check that PC is a multiple of 4
     if(PC % 4 != 0x0)
-        return 1;
-
-    if(PC > 0xFFFF)
         return 1;
         
     // Fetch instruction from mem
