@@ -332,6 +332,7 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+    //check if we are writing to a register
     if(RegWrite)
     {
         unsigned dest;
@@ -354,29 +355,20 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
-    //for next instruction
-    if(Branch == 0x0 && Jump == 0x0)
+    unsigned nextPC = *PC + 4;
+
+    //we can jump if the instruction is a jump or if the instruction is a branch 
+    if (Jump == 1)
     {
-        *PC = *PC + 4; //go to next instruction
+        *PC = (nextPC & 0xF0000000) | (jsec << 2);
     }
-
-    //branch equal
-    if(Branch == 0x1 && Jump ==0x0 && Zero == 0x1)
-    { 
-        //This is my comment
-        *PC = (extended_value << 2) + (*PC + 4);
-
-    }
-
-    //then we need to jump
-    if(Branch == 0x0 && Jump == 0x1)
+    else if (Branch == 1 && Zero == 1)
     {
-        //shift to left 2 bits
-        unsigned jsecShift = jsec << 2;
-       //will figure out 
-        unsigned PC4Bits = (*PC + 4) & 0xF0000000;//bitmask for PC + 4 first 4 bits 
-        *PC = PC4Bits | jsecShift;//combine bits with 28 bit jsec
+        *PC = nextPC + (extended_value << 2);
     }
-
+    else
+    {
+        *PC = nextPC;
+    }
 }
 
