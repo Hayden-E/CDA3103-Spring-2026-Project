@@ -1,7 +1,8 @@
 // CDA 3103C-26
 // Sarah Angell
 // April 24th 2026
-// Developed by Hayden Eicke, Tyler Mazurek, and Elizabeth Schmidt 
+// Developed by Tyler Mazurek, and Elizabeth Schmidt 
+//hayden didnt do anything
 
 #include "spimcore.h"
 
