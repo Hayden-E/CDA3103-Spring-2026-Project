@@ -3,10 +3,8 @@
 
 /* ALU */
 /* 10 Points */
-//hello hayden
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-    //cooked
     switch(ALUControl) 
     {
         case 0x0: // A + B
@@ -79,6 +77,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
             break;
     }
 
+    // Set zero value
     if(*ALUresult == 0x0)
         *Zero = 0x1;
     else
@@ -126,7 +125,6 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
     *jsec = instruction & (0x3FFFFFF);
 }
 
-    // Ella
 /* instruction decode */
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
@@ -217,14 +215,10 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
     *data2 = Reg[r2];
 }
 
-
-// Ella
 /* Sign Extend */
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value) 
 {
-
-    // or...?
     if((offset >> 15) == 1)
     {
         *extended_value = offset | 0xffff0000; // first 16 bits become 1's
@@ -235,7 +229,6 @@ void sign_extend(unsigned offset,unsigned *extended_value)
     }
 }
 
-// Ella
 /* ALU operations */
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
@@ -329,8 +322,6 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 
 }
 
-
-
 /* Write Register */
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
@@ -351,8 +342,6 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
         else Reg[dest] = ALUresult; //r-type addi lui
     }
 }
-
-
 
 /* PC update */
 /* 10 Points */
